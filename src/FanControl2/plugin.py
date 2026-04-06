@@ -320,7 +320,7 @@ class ControllerPI:
 		self.looptime += self.timer_delay
 		if self.looptime < self.dt:
 			FClogE("%s : NOT calling control, looptime %d < %d dt" % (self.name, self.looptime, self.dt))
-			return self.ControlSignal
+			return self.controlSignal
 		else:
 			FClogE("%s : calling control, looptime %d = %d dt" % (self.name, self.looptime, self.dt))
 			self.looptime = 0
@@ -331,11 +331,11 @@ class ControllerPI:
 		FClogE("%s : after scale: Input Error %3.2f %%" % (self.name, self.inputError))
 		self.inputError = self.DeadBand(self.inputError)
 		FClogE("%s : after deadband: Input Error %3.2f %%" % (self.name, self.inputError))
-		self.IntegratorOutput = self.Integrate(self.inputError)
-		FClogE("%s : Integrator output %3.2f %%" % (self.name, self.IntegratorOutput))
-		self.ControlSignal = self.ControlProcess(self.inputError, self.IntegratorOutput)
-		FClogE("%s : Control Signal %3.2f %%" % (self.name, self.ControlSignal))
-		return self.ControlSignal
+		self.integratorOutput = self.Integrate(self.inputError)
+		FClogE("%s : Integrator output %3.2f %%" % (self.name, self.integratorOutput))
+		self.controlSignal = self.ControlProcess(self.inputError, self.integratorOutput)
+		FClogE("%s : Control Signal %3.2f %%" % (self.name, self.controlSignal))
+		return self.controlSignal
 # the PI controller class -end
 
 
