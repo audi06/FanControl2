@@ -6,12 +6,12 @@ import time
 import os
 from .__init__ import _
 
-from .globals import *
+from .globals import Version, Box, FC2Log, FC2werte, DataMinute, FC2stunde, FC2HDDignore, HeadLine, TempName
 
-from enigma import eTimer, eSize
+from enigma import eTimer
 
 # Config
-from Components.config import configfile, config, ConfigSubsection, ConfigNumber, ConfigInteger, ConfigSlider, ConfigSelection, ConfigYesNo, ConfigText
+from Components.config import configfile, config, ConfigSubsection, ConfigInteger, ConfigSlider, ConfigSelection, ConfigYesNo, ConfigText
 from Components.config import getConfigListEntry
 from Components.Label import Label
 from Components.Sources.StaticText import StaticText
@@ -20,7 +20,7 @@ from Components.Sources.Progress import Progress
 # Startup/shutdown notification
 from Tools import Notifications
 from .Sensors import sensors
-from time import gmtime, strftime
+from time import strftime
 import datetime
 
 # Plugin
@@ -36,10 +36,9 @@ from Screens.Standby import TryQuitMainloop
 
 # GUI (Components)
 from Components.ActionMap import ActionMap
-from Components.ActionMap import NumberActionMap
 from Components.Harddisk import harddiskmanager
 
-from threading import Thread, Lock
+from threading import Thread
 
 try:
 	from Components.SystemInfo import BoxInfo
@@ -321,7 +320,7 @@ class ControllerPI:
 		self.looptime += self.timer_delay
 		if self.looptime < self.dt:
 			FClogE("%s : NOT calling control, looptime %d < %d dt" % (self.name, self.looptime, self.dt))
-			return Self.ControlSignal
+			return self.ControlSignal
 		else:
 			FClogE("%s : calling control, looptime %d = %d dt" % (self.name, self.looptime, self.dt))
 			self.looptime = 0
@@ -1141,7 +1140,7 @@ class FanControl2(Screen):
 			self.Vlt = config.plugins.FanControl.vlt.value
 			id = 0
 			AktRPMtmp = 0
-			sleeptime = 0
+			# sleeptime = 0
 			AktTemp = self.CurrTemp()
 			if int(strftime("%S")) < 10 and strftime("%H:%M") == "00:00":
 				DeleteData()

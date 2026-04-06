@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from twisted.web import resource, http
-from .globals import *
-from .plugin import *
+from .globals import FC2werte, HeadLine, Version, FC2Log, FC2stunde, TempName
+from .plugin import Free
 from .Sensors import sensors
 from .__init__ import _
-from Components.config import configfile, config
+from Components.config import config
 
 import os
 import datetime
@@ -41,7 +41,7 @@ class FC2web(resource.Resource):
 		req.setHeader('Content-type', 'text/html; charset=UTF-8')
 
 		""" rendering server response """
-		command = _get_arg(req, "cmd")
+		#command = _get_arg(req, "cmd")
 
 		html = "<html>"
 		html += "<head>\n"
@@ -376,7 +376,7 @@ class FC2webChart(resource.Resource):
 	isLeaf = True
 
 	def render(self, req):
-		command = _get_arg(req, "cmd")
+		# command = _get_arg(req, "cmd")
 		html = ""
 		if os.path.exists(config.plugins.FanControl.LogPath.value + "FC2data.csv"):
 			req.setHeader('Content-type', 'text/html')
