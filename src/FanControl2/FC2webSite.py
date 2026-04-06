@@ -12,6 +12,7 @@ import datetime
 ########################################################
 
 SIGN = "°"
+TITLE = "FanControl2 Webinterface"
 
 
 def _get_arg(req, key):
@@ -32,9 +33,25 @@ def _html_response(req, html):
 	return html
 
 
+def get_head(refresh, title):
+	html = "<html>"
+	html += "<head>\n"
+	html += "<meta http-equiv=\"Content-Language\" content=\"de\">\n"
+	html += "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n"
+	html += "<meta http-equiv=\"cache-control\" content=\"no-cache\" />\n"
+	html += "<meta http-equiv=\"pragma\" content=\"no-cache\" />\n"
+	html += "<meta http-equiv=\"expires\" content=\"0\">\n"
+	if refresh:
+		html += "<meta http-equiv=\"refresh\" content=\"20\">\n"
+	html += "<title>Fan Control 2 - %s</title>\n" % title
+	html += "</head>"
+	html += "<body bgcolor=\"#666666\" text=\"#FFFFFF\">\n"
+	return html
+
+
 class FC2web(resource.Resource):
 
-	title = "FanControl2 Webinterface"
+	title = TITLE
 	isLeaf = False
 
 	def render(self, req):
@@ -43,17 +60,7 @@ class FC2web(resource.Resource):
 		""" rendering server response """
 		#command = _get_arg(req, "cmd")
 
-		html = "<html>"
-		html += "<head>\n"
-		html += "<meta http-equiv=\"Content-Language\" content=\"de\">\n"
-		html += "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n"
-		html += "<meta http-equiv=\"cache-control\" content=\"no-cache\" />\n"
-		html += "<meta http-equiv=\"pragma\" content=\"no-cache\" />\n"
-		html += "<meta http-equiv=\"expires\" content=\"0\">\n"
-		html += "<meta http-equiv=\"refresh\" content=\"20\">\n"
-		html += "<title>Fan Control 2 - Info</title>\n"
-		html += "</head>"
-		html += "<body bgcolor=\"#666666\" text=\"#FFFFFF\">\n"
+		html = get_head(True, "Info")
 		html += "<form method=\"POST\" action=\"--WEBBOT-SELF--\">\n"
 		html += "<table border=\"1\" width=\"500\" bordercolorlight=\"#000000\" bordercolordark=\"#000000\" cellspacing=\"1\"><tr><td bgcolor=\"#000000\" width=\"200\">\n"
 		html += "<p align=\"center\"><img border=\"0\" src=\"/fancontrol/FC2dreambox.png\" width=\"181\" height=\"10\">\n"
@@ -136,7 +143,7 @@ class FC2web(resource.Resource):
 
 class FC2webLog(resource.Resource):
 
-	title = "FanControl2 Webinterface"
+	title = TITLE
 	isLeaf = True
 
 	def render(self, req):
@@ -147,17 +154,7 @@ class FC2webLog(resource.Resource):
 
 			""" rendering server response """
 
-			html = "<html>"
-			html += "<head>"
-			html += "<meta http-equiv=\"Content-Language\" content=\"de\">"
-			html += "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">"
-			html += "<meta http-equiv=\"cache-control\" content=\"no-cache\" />"
-			html += "<meta http-equiv=\"pragma\" content=\"no-cache\" />"
-			html += "<meta http-equiv=\"expires\" content=\"0\">"
-			html += "<meta http-equiv=\"refresh\" content=\"30\">"
-			html += "<title>Fan Control 2 - Logging</title>"
-			html += "</head>"
-			html += "<body bgcolor=\"#666666\" text=\"#FFFFFF\">\n"
+			html = get_head(True, "Logging")
 			html += "<table border=\"1\" width=\"500\" bordercolorlight=\"#000000\" bordercolordark=\"#000000\" cellspacing=\"1\"><tr><td bgcolor=\"#000000\" width=\"200\">\n"
 			html += "<p align=\"center\"><img border=\"0\" src=\"/fancontrol/FC2dreambox.png\" width=\"181\" height=\"10\">\n"
 			html += "<font color=\"#FFFFFF\"><BR><b>Fan Control 2 - Logging</b></font></p>\n"
@@ -372,7 +369,7 @@ def CreateDataHead():
 
 class FC2webChart(resource.Resource):
 
-	title = "FanControl2 Webinterface"
+	title = TITLE
 	isLeaf = True
 
 	def render(self, req):
@@ -406,16 +403,7 @@ class FC2webChart(resource.Resource):
 				if DT[0] > Dfind:
 					Anzahl += 1
 #			Anzahl -= 1
-			html = "<html>"
-			html += "<head>"
-			html += "<meta http-equiv=\"Content-Language\" content=\"de\">"
-			html += "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">"
-			html += "<meta http-equiv=\"cache-control\" content=\"no-cache\" />"
-			html += "<meta http-equiv=\"pragma\" content=\"no-cache\" />"
-			html += "<meta http-equiv=\"expires\" content=\"0\">"
-			html += "<title>Fan Control 2 - Chart</title>"
-			html += "</head>"
-			html += "<body bgcolor=\"#666666\" text=\"#FFFFFF\">\n"
+			html = get_head(True, "Chart")
 			html += "<table border=\"1\" width=\"900\" bordercolorlight=\"#000000\" bordercolordark=\"#000000\"  cellspacing=\"1\"><tr><td bgcolor=\"#000000\" width=\"200\">\n"
 			html += "<p align=\"center\"><img border=\"0\" src=\"/fancontrol/FC2dreambox.png\" width=\"181\" height=\"10\">\n"
 			html += "<font color=\"#FFFFFF\"><BR><b>Fan Control 2 - Chart</b></font></p>\n"

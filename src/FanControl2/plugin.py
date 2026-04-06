@@ -1345,12 +1345,14 @@ def selSetup(menuid, **kwargs):
 
 
 def Plugins(**kwargs):
+	name = _("Fan Control")
+	name2 = _("Fan Control 2")
 	list = [
-	PluginDescriptor(name=_("Fan Control 2"), description=_("Fan Control"), where=[PluginDescriptor.WHERE_SESSIONSTART, PluginDescriptor.WHERE_AUTOSTART], needsRestart=True, fnc=autostart)]
+	PluginDescriptor(name=name2, description=name, where=[PluginDescriptor.WHERE_SESSIONSTART, PluginDescriptor.WHERE_AUTOSTART], needsRestart=True, fnc=autostart)]
 	if os.path.exists("/proc/stb/fp/fan_vlt"):
-		list.append(PluginDescriptor(name=_("Fan Control 2"), description=_("setup Fancontol inStandby mode"), where=PluginDescriptor.WHERE_MENU, needsRestart=True, fnc=selSetup))
+		list.append(PluginDescriptor(name=name2, description=_("setup Fancontol inStandby mode"), where=PluginDescriptor.WHERE_MENU, needsRestart=True, fnc=selSetup))
 		if config.plugins.FanControl.FanControlInExtension.value:
-			list.append(PluginDescriptor(name=_("Fan Control 2"), description=_("Fan Control"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, icon="plugin.png", needsRestart=True, fnc=main))
+			list.append(PluginDescriptor(name=name2, description=name, where=PluginDescriptor.WHERE_EXTENSIONSMENU, icon="plugin.png", needsRestart=True, fnc=main))
 		if config.plugins.FanControl.MonitorInExtension.value:
-			list.append(PluginDescriptor(name=_("Fan Control 2 - Monitor"), description=_("Fan Control"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, icon="plugin.png", needsRestart=True, fnc=mainMonitor))
+			list.append(PluginDescriptor(name=_("Fan Control 2 - Monitor"), description=name, where=PluginDescriptor.WHERE_EXTENSIONSMENU, icon="plugin.png", needsRestart=True, fnc=mainMonitor))
 	return list
