@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from twisted.web import resource, http
-from .globals import FC2werte, HeadLine, Version, FC2Log, FC2stunde, TempName
+from .globals import FC2werte, FC2Log, FC2stunde
 from .plugin import Free
 from .Sensors import sensors
-from .__init__ import _
+from .__init__ import _, __version__, HeadLine, TempName
 from Components.config import config
 
 import os
@@ -126,7 +126,7 @@ class FC2web(resource.Resource):
 
 		html += "<table border=\"1\" width=\"500\">\n"
 		html += "<tr>\n"
-		html += "<td>Version: %s </td>\n" % Version
+		html += "<td>Version: V%s </td>\n" % __version__
 		html += "<td>Settings: %s-%s %sC</td>\n" % (config.plugins.FanControl.temp.value, config.plugins.FanControl.tempmax.value, SIGN)
 		html += "<td>%s-%s rpm</td>\n" % (config.plugins.FanControl.minRPM.value, config.plugins.FanControl.maxRPM.value)
 		html += "</tr>\n"

@@ -4,11 +4,8 @@
 
 import time
 import os
-from .__init__ import _
-
-from .globals import Version, Box, FC2Log, FC2werte, DataMinute, FC2stunde, FC2HDDignore, HeadLine, TempName
-from .globals import ZielRPM, AktVLT, AktPWM, AktRPM, AktTemp, AktHDD, LastVLT, LastPWM, IntegralRPM, ErrRPM
-from .globals import FanFehler, OverheatTimer, Overheat, FanOffWait, RPMread, RPMdiff, FirstStart, istStandbySave, disableHDDread, session
+from .__init__ import _, __version__, HeadLine, TempName
+from .globals import FC2Log, FC2werte, FC2stunde
 
 from enigma import eTimer
 
@@ -55,9 +52,34 @@ import queue
 
 Briefkasten = queue.Queue()
 
-# Local defaults for names declared global in this module but not provided by globals.py.
+# Local defaults for names declared global in this module
 FritzTime = 0
 AktPWMCTL = 0
+FirstStart = True
+FanOffWait = False
+ZielRPM = 0
+OverheatTimer = 0
+IntegralRPM = 0
+AktVLT = 0
+DataMinute = ""
+FC2HDDignore = []
+AktPWM = 0
+AktRPM = 0
+AktTemp = 0
+AktHDD = []
+LastVLT = 0
+LastPWM = 0
+ErrRPM = 0
+FanFehler = 0
+Overheat = False
+RPMread = 0
+RPMdiff = 0
+istStandbySave = False
+disableHDDread = False
+
+#AktERR = 0
+#Recording = False
+#RPMrunning = False
 
 
 def main(session, **kwargs):
@@ -229,15 +251,6 @@ def GetFanRPM():
 	else:
 		RPMread += 1
 	return value
-
-
-def GetBox():
-	B = Box
-	if os.path.exists("/proc/stb/info/model"):
-		f = open("/proc/stb/info/model")
-		B = f.readline()
-		f.close()
-	return B
 
 # def isDMMdisabled():
 # 	value = False
@@ -730,7 +743,7 @@ class FanControl2Plugin(ConfigListScreen, Screen):
 		self["key_yellow"] = self["yellow"] = StaticText(_("Check"))
 		self["key_blue"] = self["blue"] = StaticText(_("Help"))
 		self["introduction"] = StaticText()
-		self["Version"] = StaticText(Version)
+		self["Version"] = StaticText("V %s" % __version__)
 		self["TxtTemp"] = StaticText()
 		self["TxtZielRPM"] = StaticText()
 		self["TxtRPM"] = StaticText()
@@ -1001,7 +1014,6 @@ class FanControl2(Screen):
 	RPMController = ControllerPI("RPMController")
 
 	def __init__(self, session):
-		global Box
 		Screen.__init__(self, session)
 		self.session = session
 		self.FanMin = 500
@@ -1026,7 +1038,6 @@ class FanControl2(Screen):
 			os.rename("/usr/lib/enigma2/python/Plugins/Extensions/FanControl2/data/diagram.class.org", "/usr/lib/enigma2/python/Plugins/Extensions/FanControl2/data/diagram.class")
 # 		if not isDMMdisabled() and config.plugins.FanControl.DisableDMM.value:
 # 			disableDMM()
-		Box = GetBox()
 		HDDtestTemp()
 		GetHDDtemp(False)
 		DeleteData()
@@ -1305,7 +1316,6 @@ class FanControl2(Screen):
 
 
 def autostart(reason, **kwargs):
-	global session
 	if reason == 0 and "session" in kwargs:
 		if os.path.exists("/usr/lib/enigma2/python/Plugins/Extensions/WebInterface/__init__.pyo") or os.path.exists("/usr/lib/enigma2/python/Plugins/Extensions/WebInterface/__init__.py"):
 			from Plugins.Extensions.WebInterface.WebChilds.Toplevel import addExternalChild
@@ -1318,14 +1328,14 @@ def autostart(reason, **kwargs):
 			root.putChild(b"chart", FC2webChart())
 			if os.path.exists("/usr/lib/enigma2/python/Plugins/Extensions/WebInterface/web/external.xml"):
 				try:
-					addExternalChild(("fancontrol", root, "Fan Control 2", Version, True))
+					addExternalChild(("fancontrol", root, "Fan Control 2", __version__, True))
 					FClog("use new WebIF")
 				except Exception:
 					addExternalChild(("fancontrol", root))
 					FClog("use old WebIF")
 			if os.path.exists("/usr/lib/enigma2/python/Plugins/Extensions/OpenWebif/pluginshook.src"):
 				try:
-					addExternalChild(("fancontrol", root, "Fan Control 2", Version))
+					addExternalChild(("fancontrol", root, "Fan Control 2", __version__))
 					FClog("use new OpenWebIF")
 				except Exception:
 					pass
