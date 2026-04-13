@@ -7,6 +7,8 @@ import os
 from .__init__ import _
 
 from .globals import Version, Box, FC2Log, FC2werte, DataMinute, FC2stunde, FC2HDDignore, HeadLine, TempName
+from .globals import ZielRPM, AktVLT, AktPWM, AktRPM, AktTemp, AktHDD, LastVLT, LastPWM, IntegralRPM, ErrRPM
+from .globals import FanFehler, OverheatTimer, Overheat, FanOffWait, RPMread, RPMdiff, FirstStart, istStandbySave, disableHDDread, session
 
 from enigma import eTimer
 
@@ -52,6 +54,10 @@ except ImportError:
 import queue
 
 Briefkasten = queue.Queue()
+
+# Local defaults for names declared global in this module but not provided by globals.py.
+FritzTime = 0
+AktPWMCTL = 0
 
 
 def main(session, **kwargs):
